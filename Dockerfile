@@ -1,8 +1,5 @@
 FROM nginx:alpine
 
-# Add non-root user
-RUN adduser -D -H -u 1000 -s /sbin/nologin www-data
-
 # Copy configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
@@ -13,14 +10,14 @@ RUN apk update && \
     rm -rf /var/cache/apk/*
 
 # Set proper permissions
-RUN chown -R www-data:www-data /var/cache/nginx && \
-    chown -R www-data:www-data /var/log/nginx && \
-    chown -R www-data:www-data /etc/nginx/conf.d && \
+RUN chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /etc/nginx/conf.d && \
     touch /var/run/nginx.pid && \
-    chown -R www-data:www-data /var/run/nginx.pid
+    chown -R nginx:nginx /var/run/nginx.pid
 
 # Switch to non-root user
-USER www-data
+USER nginx
 
 EXPOSE 3000
 
